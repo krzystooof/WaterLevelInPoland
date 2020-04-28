@@ -1,14 +1,6 @@
 package pl.krzystooof.stanwodwpolsce.data;
 
-import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
 
 public class DataFromSource {
 
@@ -48,6 +40,8 @@ public class DataFromSource {
     @SerializedName ("zjawisko_zarastania_data_pomiaru")
     String overgrowAmountDate;
 
+    boolean visible;
+
     public DataFromSource(String stationId, String stationName, String riverName, String voivodeshipName, String waterAmount, String waterAmountDate, String waterTemperature, String waterTemperatureDate, String icingAmount, String icingAmountDate, String overgrowAmount, String overgrowAmountDate) {
         this.stationId = stationId;
         this.stationName = stationName;
@@ -61,6 +55,7 @@ public class DataFromSource {
         this.icingAmountDate = icingAmountDate;
         this.overgrowAmount = overgrowAmount;
         this.overgrowAmountDate = overgrowAmountDate;
+        this.visible = true;
     }
 
     public String getStationId() {
@@ -157,5 +152,13 @@ public class DataFromSource {
 
     public void setOvergrowAmountDate(String overgrowAmountDate) {
         this.overgrowAmountDate = overgrowAmountDate;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 }
