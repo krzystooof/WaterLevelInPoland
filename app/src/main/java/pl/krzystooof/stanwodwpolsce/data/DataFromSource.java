@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class dataFromSource {
+public class DataFromSource {
 
     @SerializedName("id_stacji")
     String stationId;
@@ -48,7 +48,7 @@ public class dataFromSource {
     @SerializedName ("zjawisko_zarastania_data_pomiaru")
     String overgrowAmountDate;
 
-    public dataFromSource(String stationId, String stationName, String riverName, String voivodeshipName, String waterAmount, String waterAmountDate, String waterTemperature, String waterTemperatureDate, String icingAmount, String icingAmountDate, String overgrowAmount, String overgrowAmountDate) {
+    public DataFromSource(String stationId, String stationName, String riverName, String voivodeshipName, String waterAmount, String waterAmountDate, String waterTemperature, String waterTemperatureDate, String icingAmount, String icingAmountDate, String overgrowAmount, String overgrowAmountDate) {
         this.stationId = stationId;
         this.stationName = stationName;
         this.riverName = riverName;

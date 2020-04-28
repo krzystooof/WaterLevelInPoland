@@ -7,11 +7,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import pl.krzystooof.stanwodwpolsce.data.dataFromSource;
+import pl.krzystooof.stanwodwpolsce.data.DataFromSource;
 
 class mRecyclerAdapter extends RecyclerView.Adapter {
-    ArrayList<dataFromSource> data;
-    public mRecyclerAdapter(ArrayList<dataFromSource> data) {
+    ArrayList<DataFromSource> data;
+    public mRecyclerAdapter(ArrayList<DataFromSource> data) {
         this.data = data;
     }
 

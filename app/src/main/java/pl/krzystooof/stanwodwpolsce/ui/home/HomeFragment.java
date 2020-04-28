@@ -18,7 +18,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,15 +28,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import pl.krzystooof.stanwodwpolsce.R;
-import pl.krzystooof.stanwodwpolsce.data.dataFromSource;
-import pl.krzystooof.stanwodwpolsce.data.downloadDataFromSource;
+import pl.krzystooof.stanwodwpolsce.data.DataFromSource;
+import pl.krzystooof.stanwodwpolsce.data.ManageData;
 
 public class HomeFragment extends Fragment {
 
     //TODO change edit text backgound color mEditText.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
 
     private HomeViewModel homeViewModel;
-    private ArrayList<dataFromSource> data;
+    private ArrayList<DataFromSource> data;
     String LogTag = "SearchFragment ";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -48,7 +47,7 @@ public class HomeFragment extends Fragment {
         Log.i(LogTag, "view model: created");
 
         String jsonUrl = "https://danepubliczne.imgw.pl/api/data/hydro/";
-        ArrayList<dataFromSource> data = new ArrayList<>();
+        ArrayList<DataFromSource> data = new ArrayList<>();
 
         //start downloading data
         new GetData(jsonUrl, data).execute();
@@ -56,7 +55,6 @@ public class HomeFragment extends Fragment {
         homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-
             }
         });
         return root;
@@ -68,7 +66,7 @@ public class HomeFragment extends Fragment {
         private LinearLayoutManager linearLayoutManager;
         private ItemTouchHelper itemTouchHelper;
 
-        mRecycler(View root, ArrayList<dataFromSource> data) {
+        mRecycler(View root, ArrayList<DataFromSource> data) {
             Context context = getContext();
             recyclerView = root.findViewById(R.id.recyclerView);
             recyclerView.setHasFixedSize(true);
@@ -157,9 +155,9 @@ public class HomeFragment extends Fragment {
 
     class GetData extends AsyncTask<String, String, String> {
         String jsonUrl;
-        ArrayList<dataFromSource> data;
+        ArrayList<DataFromSource> data;
 
-        public GetData(String jsonUrl, ArrayList<dataFromSource> data) {
+        public GetData(String jsonUrl, ArrayList<DataFromSource> data) {
             this.jsonUrl = jsonUrl;
             this.data = data;
         }
@@ -167,10 +165,10 @@ public class HomeFragment extends Fragment {
         @Override
         protected String doInBackground(String... strings) {
             try {
-                ArrayList<dataFromSource> downloaded = new downloadDataFromSource().run(jsonUrl);
+                ArrayList<DataFromSource> downloaded = new ManageData().download(jsonUrl);
 
                 //add data to recycler's array
-                for (dataFromSource dataFromSource : downloaded){
+                for (DataFromSource dataFromSource : downloaded){
                     data.add(dataFromSource);
                 }
             } catch (IOException e) {
