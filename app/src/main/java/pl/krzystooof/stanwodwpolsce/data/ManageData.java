@@ -29,10 +29,10 @@ public class ManageData {
 
             if (dataObject.stationName.matches(regex) || dataObject.riverName.matches(regex)){
                 //object matches regex
-                dataObject.setVisible(true);
+
             }
             else {
-                dataObject.setVisible(false);
+                dataArray.remove(dataObject);
             }
         }
     }

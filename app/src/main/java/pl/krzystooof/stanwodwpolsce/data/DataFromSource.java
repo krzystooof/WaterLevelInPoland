@@ -40,7 +40,6 @@ public class DataFromSource {
     @SerializedName ("zjawisko_zarastania_data_pomiaru")
     String overgrowAmountDate;
 
-    boolean visible;
 
     public DataFromSource(String stationId, String stationName, String riverName, String voivodeshipName, String waterAmount, String waterAmountDate, String waterTemperature, String waterTemperatureDate, String icingAmount, String icingAmountDate, String overgrowAmount, String overgrowAmountDate) {
         this.stationId = stationId;
@@ -55,7 +54,6 @@ public class DataFromSource {
         this.icingAmountDate = icingAmountDate;
         this.overgrowAmount = overgrowAmount;
         this.overgrowAmountDate = overgrowAmountDate;
-        this.visible = true;
     }
 
     public String getStationId() {
@@ -152,13 +150,5 @@ public class DataFromSource {
 
     public void setOvergrowAmountDate(String overgrowAmountDate) {
         this.overgrowAmountDate = overgrowAmountDate;
-    }
-
-    public boolean isVisible() {
-        return visible;
-    }
-
-    public void setVisible(boolean visible) {
-        this.visible = visible;
     }
 }

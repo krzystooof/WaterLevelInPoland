@@ -1,4 +1,4 @@
-package pl.krzystooof.stanwodwpolsce.ui.dashboard;
+package pl.krzystooof.stanwodwpolsce.ui.Saved;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

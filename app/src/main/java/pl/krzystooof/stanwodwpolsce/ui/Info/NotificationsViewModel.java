@@ -1,4 +1,4 @@
-package pl.krzystooof.stanwodwpolsce.ui.notifications;
+package pl.krzystooof.stanwodwpolsce.ui.Info;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

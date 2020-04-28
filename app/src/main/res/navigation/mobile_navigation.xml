@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="pl.krzystooof.stanwodwpolsce.ui.home.HomeFragment"
-        android:label="@string/title_home"
+        android:name="pl.krzystooof.stanwodwpolsce.ui.Search.SearchFragment"
+        android:label="@string/Search"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="pl.krzystooof.stanwodwpolsce.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
+        android:name="pl.krzystooof.stanwodwpolsce.ui.Saved.DashboardFragment"
+        android:label="@string/Saved"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="pl.krzystooof.stanwodwpolsce.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
+        android:name="pl.krzystooof.stanwodwpolsce.ui.Info.NotificationsFragment"
+        android:label="Info"
         tools:layout="@layout/fragment_notifications" />
 </navigation>
