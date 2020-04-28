@@ -1,4 +1,4 @@
-package pl.krzystooof.stanwodwpolsce.ui.home;
+package pl.krzystooof.stanwodwpolsce.ui.Search;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -31,30 +31,31 @@ import pl.krzystooof.stanwodwpolsce.R;
 import pl.krzystooof.stanwodwpolsce.data.DataFromSource;
 import pl.krzystooof.stanwodwpolsce.data.ManageData;
 
-public class HomeFragment extends Fragment {
+public class SearchFragment extends Fragment {
 
-    //TODO change edit text backgound color mEditText.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
 
-    private HomeViewModel homeViewModel;
+    private SearchViewModel searchViewModel;
     private ArrayList<DataFromSource> data;
     String LogTag = "SearchFragment ";
+    mRecycler recycler;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
+        searchViewModel =
+                ViewModelProviders.of(this).get(SearchViewModel.class);
+        final View root = inflater.inflate(R.layout.fragment_home, container, false);
         Log.i(LogTag, "view model: created");
 
         String jsonUrl = "https://danepubliczne.imgw.pl/api/data/hydro/";
-        ArrayList<DataFromSource> data = new ArrayList<>();
+        final ArrayList<DataFromSource> data = new ArrayList<>();
 
         //start downloading data
         new GetData(jsonUrl, data).execute();
 
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        searchViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
+                recycler = new mRecycler(root,data);
             }
         });
         return root;
@@ -166,16 +167,27 @@ public class HomeFragment extends Fragment {
         protected String doInBackground(String... strings) {
             try {
                 ArrayList<DataFromSource> downloaded = new ManageData().download(jsonUrl);
+                Log.i(LogTag, "GetData: data retrieved from jsonUrl, size = " + downloaded.size());
 
+                data.clear();
                 //add data to recycler's array
                 for (DataFromSource dataFromSource : downloaded){
                     data.add(dataFromSource);
                 }
+                Log.i(LogTag, "GetData: copied data to recycler's array");
             } catch (IOException e) {
                 //no database connection
-                //TODO show snackbar and Log
+                recycler.showSnackbar("Brak połączenia", true);
+                Log.i(LogTag, "GetData: No connection");
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            recycler.getAdapter().notifyDataSetChanged();
+            Log.i(LogTag, "GetData: notified about data change, recycler items = " + recycler.getAdapter().getItemCount());
         }
     }
 }
