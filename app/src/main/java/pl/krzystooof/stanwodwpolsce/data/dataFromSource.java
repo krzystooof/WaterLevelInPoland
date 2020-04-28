@@ -1,8 +1,16 @@
 package pl.krzystooof.stanwodwpolsce.data;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
-public class mData {
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class dataFromSource {
 
     @SerializedName("id_stacji")
     String stationId;
@@ -40,7 +48,7 @@ public class mData {
     @SerializedName ("zjawisko_zarastania_data_pomiaru")
     String overgrowAmountDate;
 
-    public mData(String stationId, String stationName, String riverName, String voivodeshipName, String waterAmount, String waterAmountDate, String waterTemperature, String waterTemperatureDate, String icingAmount, String icingAmountDate, String overgrowAmount, String overgrowAmountDate) {
+    public dataFromSource(String stationId, String stationName, String riverName, String voivodeshipName, String waterAmount, String waterAmountDate, String waterTemperature, String waterTemperatureDate, String icingAmount, String icingAmountDate, String overgrowAmount, String overgrowAmountDate) {
         this.stationId = stationId;
         this.stationName = stationName;
         this.riverName = riverName;
