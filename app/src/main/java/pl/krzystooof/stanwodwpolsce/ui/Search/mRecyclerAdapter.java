@@ -3,6 +3,7 @@ package pl.krzystooof.stanwodwpolsce.ui.Search;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,11 @@ import java.util.ArrayList;
 import pl.krzystooof.stanwodwpolsce.R;
 import pl.krzystooof.stanwodwpolsce.data.DataFromSource;
 
+
 class mRecyclerAdapter extends RecyclerView.Adapter {
+
+    String LogTag = "SearchRecycler";
+
     ArrayList<DataFromSource> data;
     public mRecyclerAdapter(ArrayList<DataFromSource> data) {
         this.data = data;
@@ -39,7 +44,7 @@ class mRecyclerAdapter extends RecyclerView.Adapter {
             return new mViewHolderSearch(listItem);
         }
         //title
-        else if (viewType == 2 || viewType == 0) {
+        else if (viewType == 2 || viewType == 0 || viewType == 4) {
             View listItem = layoutInflater.inflate(R.layout.recycler_title, parent, false);
             return new mViewHolderTitle(listItem);
         }
@@ -49,29 +54,36 @@ class mRecyclerAdapter extends RecyclerView.Adapter {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
         int viewType = getItemViewType(position);
-        //Log.i(LogTag, "BindViewHolder: position = " + position + ", viewType = " + viewType);
+        Log.i(LogTag, "BindViewHolder: position = " + position + ", viewType = " + viewType+", items = " + getItemCount());
         //hello
          if (viewType == 0) {
             mViewHolderTitle mHolder = (mViewHolderTitle) holder;
             mHolder.titleText.setText("Cześć!");
-            mHolder.layout.setBackground(ContextCompat.getDrawable(mHolder.layout.getContext(), R.drawable.gradient_background1));
-        }
+             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                 mHolder.layout.setBackground(ContextCompat.getDrawable(mHolder.layout.getContext(), R.drawable.gradient_background1));
+             }
+         }
         //Search
         else if (viewType == 1) {
             final mViewHolderSearch mHolder = (mViewHolderSearch) holder;
-             mHolder.layout.setBackground(ContextCompat.getDrawable(mHolder.layout.getContext(), R.drawable.gradient_background2));
-            // set on change listener
+             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                 mHolder.layout.setBackground(ContextCompat.getDrawable(mHolder.layout.getContext(), R.drawable.gradient_background2));
+             }
+             // set on change listener
         }
         //title
         else if (viewType == 2) {
             mViewHolderTitle mHolder = (mViewHolderTitle) holder;
-            mHolder.titleText.setText("Zobacz co mamy:");
-            mHolder.layout.setBackground(ContextCompat.getDrawable(mHolder.layout.getContext(), R.drawable.gradient_background3));
-        }
+            if (getItemCount()>4) mHolder.titleText.setText("Zobacz co mamy:");
+            else mHolder.titleText.setText("");
+             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                 mHolder.layout.setBackground(ContextCompat.getDrawable(mHolder.layout.getContext(), R.drawable.gradient_background3));
+             }
+         }
         //Item
         else if (viewType == 3){
             mViewHolderItem mHolder = (mViewHolderItem) holder;
@@ -82,30 +94,36 @@ class mRecyclerAdapter extends RecyclerView.Adapter {
             mHolder.heightText.setText(dataObject.getWaterAmount()+ " cm");
             mHolder.stationText.setText(dataObject.getStationName());
         }
+         //end gradient
+         else if (viewType == 4) {
+             mViewHolderTitle mHolder = (mViewHolderTitle) holder;
+             String text = " ";
+             //make bigger if items not on all screen
+             if (position<10) {
+                 for(int i=0;i<10-position;i++) text+="\n\n";
+             }
+             mHolder.titleText.setText(text);
+             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                 mHolder.layout.setBackground(ContextCompat.getDrawable(mHolder.layout.getContext(), R.drawable.gradient_background_reversed));
+             }
+         }
     }
 
     @Override
     public int getItemCount() {
         int dataSize = data.size();
-
-        //no offers - no views
-        if (dataSize == 0) return 0;
-
-        //offers + additional (1 search, 2 title)
-        return dataSize + 1 + 2;
+        //offers + additional (1 search, 3 title)
+        return dataSize + 1 + 3;
     }
 
     @Override
     public int getItemViewType(int position) {
         int itemCount = getItemCount();
 
-        //no offers
-        if (itemCount == 0) return 0;
+        if (position < 3) return position;
+        else  if (position == itemCount -1) return 4;
+        return 3;
 
-        else {
-            if (position < 3) return position;
-            return 3;
-        }
     }
 
     public static class mViewHolderSearch extends RecyclerView.ViewHolder {

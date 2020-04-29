@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start|fill|fill_horizontal|fill_vertical"
-        android:layout_marginBottom="58dp"
+        android:layout_marginBottom="55dp"
         android:baselineAligned="false"
         android:clipToPadding="false"
         app:defaultNavHost="true"
