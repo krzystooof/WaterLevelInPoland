@@ -2,7 +2,11 @@ package pl.krzystooof.stanwodwpolsce.Recycler;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,16 +15,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
 
 import java.util.ArrayList;
 
 import pl.krzystooof.stanwodwpolsce.R;
 import pl.krzystooof.stanwodwpolsce.data.DataFromSource;
+import pl.krzystooof.stanwodwpolsce.data.ManageData;
 
 
 class mRecyclerAdapter extends RecyclerView.Adapter {
@@ -28,11 +31,17 @@ class mRecyclerAdapter extends RecyclerView.Adapter {
     String LogTag = "SearchRecycler";
 
     ArrayList<DataFromSource> data;
+    ArrayList<DataFromSource> backup;
+
+
     public mRecyclerAdapter(ArrayList<DataFromSource> data) {
         this.data = data;
+        backup = new ArrayList<>(data);
     }
 
-    //3 types of views implemented: search, title, item
+
+
+    //types of views implemented: search(1), title(0,2,4), item(3)
 
     @NonNull
     @Override
@@ -58,55 +67,86 @@ class mRecyclerAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
         int viewType = getItemViewType(position);
-        Log.i(LogTag, "BindViewHolder: position = " + position + ", viewType = " + viewType+", items = " + getItemCount());
+        Log.i(LogTag, "BindViewHolder: position = " + position + ", viewType = " + viewType + ", items = " + getItemCount());
         //hello
-         if (viewType == 0) {
+        if (viewType == 0) {
             mViewHolderTitle mHolder = (mViewHolderTitle) holder;
             mHolder.titleText.setText("Cześć!");
-             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                 mHolder.layout.setBackground(ContextCompat.getDrawable(mHolder.layout.getContext(), R.drawable.gradient_background1));
-             }
-         }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                mHolder.layout.setBackground(ContextCompat.getDrawable(mHolder.layout.getContext(), R.drawable.gradient_background1));
+            }
+        }
         //Search
         else if (viewType == 1) {
             final mViewHolderSearch mHolder = (mViewHolderSearch) holder;
-             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                 mHolder.layout.setBackground(ContextCompat.getDrawable(mHolder.layout.getContext(), R.drawable.gradient_background2));
-             }
-             // set on change listener
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                mHolder.layout.setBackground(ContextCompat.getDrawable(mHolder.layout.getContext(), R.drawable.gradient_background2));
+            }
+            final Handler mHandler = new Handler();
+            mHolder.editText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    mHandler.removeCallbacksAndMessages(null);
+                    mHandler.postDelayed(userStoppedTyping, 500);
+                }
+                Runnable userStoppedTyping = new Runnable() {
+
+                    @Override
+                    public void run() {
+                        ArrayList<DataFromSource> newToShow = new ManageData().filer(mHolder.editText.getText().toString(),backup);
+                        data.clear();
+                        for(DataFromSource object : newToShow){
+                            data.add(object);
+                        }
+                        notifyDataSetChanged();
+                        mHolder.editText.setSelection(mHolder.editText.getText().length());
+                    }
+                };
+            });
         }
         //title
         else if (viewType == 2) {
             mViewHolderTitle mHolder = (mViewHolderTitle) holder;
-            if (getItemCount()>4) mHolder.titleText.setText("Zobacz co mamy:");
-            else mHolder.titleText.setText("");
-             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                 mHolder.layout.setBackground(ContextCompat.getDrawable(mHolder.layout.getContext(), R.drawable.gradient_background3));
-             }
-         }
+            if (getItemCount() > 4) mHolder.titleText.setText("Zobacz co mamy:");
+            else mHolder.titleText.setText("Brak wyników");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                mHolder.layout.setBackground(ContextCompat.getDrawable(mHolder.layout.getContext(), R.drawable.gradient_background3));
+            }
+        }
         //Item
-        else if (viewType == 3){
+        else if (viewType == 3) {
             mViewHolderItem mHolder = (mViewHolderItem) holder;
             //item in array = position - 3 (1search + 2title)
             int index = position - 3;
             DataFromSource dataObject = data.get(index);
             mHolder.riverText.setText(dataObject.getRiverName());
-            mHolder.heightText.setText(dataObject.getWaterAmount()+ " cm");
+            mHolder.heightText.setText(dataObject.getWaterAmount() + " cm");
             mHolder.stationText.setText(dataObject.getStationName());
         }
-         //end gradient
-         else if (viewType == 4) {
-             mViewHolderTitle mHolder = (mViewHolderTitle) holder;
-             String text = " ";
-             //make bigger if items not on all screen
-             if (position<10) {
-                 for(int i=0;i<10-position;i++) text+="\n\n";
-             }
-             mHolder.titleText.setText(text);
-             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                 mHolder.layout.setBackground(ContextCompat.getDrawable(mHolder.layout.getContext(), R.drawable.gradient_background_reversed));
-             }
-         }
+        //end gradient
+        else if (viewType == 4) {
+            mViewHolderTitle mHolder = (mViewHolderTitle) holder;
+            String text = " ";
+            //make bigger if items not on all screen
+            if (position < 10) {
+                text += "\n\n\n\n\n\n\n\n";
+                for (int i = 4; i < 10 - position; i++) text += "\n";
+            }
+            mHolder.titleText.setText(text);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                mHolder.layout.setBackground(ContextCompat.getDrawable(mHolder.layout.getContext(), R.drawable.gradient_background_reversed));
+            }
+        }
     }
 
     @Override
@@ -121,9 +161,14 @@ class mRecyclerAdapter extends RecyclerView.Adapter {
         int itemCount = getItemCount();
 
         if (position < 3) return position;
-        else  if (position == itemCount -1) return 4;
+        else if (position == itemCount - 1) return 4;
         return 3;
 
+    }
+
+    public void notifyAdapterDataSetChanged() {
+        backup = new ArrayList<>(data);
+        notifyDataSetChanged();
     }
 
     public static class mViewHolderSearch extends RecyclerView.ViewHolder {
@@ -166,6 +211,3 @@ class mRecyclerAdapter extends RecyclerView.Adapter {
         }
     }
 }
-
-//if data size = 0 placeholder like allegro when loading - set custom elements and set background to color primary dark
-//if larger - search, title ("Zobacz co mamy:"), wyniki

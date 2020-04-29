@@ -23,17 +23,17 @@ public class ManageData {
         DataFromSource[] data = new Gson().fromJson(jsonString, DataFromSource[].class);
         return new ArrayList<>(Arrays.asList(data));
     }
-    public void filer(String keyword, ArrayList<DataFromSource> dataArray){
-        String regex = keyword + "(.)*";
-        for (DataFromSource dataObject : dataArray){
 
-            if (dataObject.stationName.matches(regex) || dataObject.riverName.matches(regex)){
+    public ArrayList<DataFromSource> filer(String keyword, ArrayList<DataFromSource> dataArray) {
+        ArrayList<DataFromSource> returnArray = new ArrayList<>();
+        String regex = keyword.toLowerCase() + "(.)*";
+        for (DataFromSource dataObject : dataArray) {
+
+            if (dataObject.stationName.toLowerCase().matches(regex) || dataObject.riverName.toLowerCase().matches(regex)) {
                 //object matches regex
-
-            }
-            else {
-                dataArray.remove(dataObject);
+                returnArray.add(dataObject);
             }
         }
+        return returnArray;
     }
 }

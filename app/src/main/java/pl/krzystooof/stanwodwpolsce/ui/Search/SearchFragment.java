@@ -1,8 +1,5 @@
 package pl.krzystooof.stanwodwpolsce.ui.Search;
 
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,15 +9,9 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,15 +24,15 @@ import pl.krzystooof.stanwodwpolsce.data.ManageData;
 public class SearchFragment extends Fragment {
 
 
-    private SearchViewModel searchViewModel;
     String LogTag = "SearchFragment";
     mRecycler recycler;
+    private SearchViewModel searchViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         searchViewModel =
                 ViewModelProviders.of(this).get(SearchViewModel.class);
-        final View root = inflater.inflate(R.layout.fragment_home, container, false);
+        final View root = inflater.inflate(R.layout.fragment_search, container, false);
         Log.i(LogTag, "view model: created");
 
         String jsonUrl = "https://danepubliczne.imgw.pl/api/data/hydro/";
@@ -53,13 +44,11 @@ public class SearchFragment extends Fragment {
         searchViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                recycler = new mRecycler(root,data,getContext());
+                recycler = new mRecycler(root, data, getContext());
             }
         });
         return root;
     }
-
-
 
 
     class GetData extends AsyncTask<String, String, String> {
@@ -79,7 +68,7 @@ public class SearchFragment extends Fragment {
 
                 data.clear();
                 //add data to recycler's array
-                for (DataFromSource dataFromSource : downloaded){
+                for (DataFromSource dataFromSource : downloaded) {
                     data.add(dataFromSource);
                 }
                 Log.i(LogTag, "GetData: copied data to recycler's array");

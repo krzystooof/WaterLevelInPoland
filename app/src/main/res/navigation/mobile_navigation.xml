@@ -9,7 +9,7 @@
         android:id="@+id/navigation_home"
         android:name="pl.krzystooof.stanwodwpolsce.ui.Search.SearchFragment"
         android:label="@string/Search"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_search" />
 
     <fragment
         android:id="@+id/navigation_dashboard"

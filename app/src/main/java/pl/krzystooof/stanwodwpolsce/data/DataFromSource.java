@@ -7,37 +7,37 @@ public class DataFromSource {
     @SerializedName("id_stacji")
     String stationId;
 
-    @SerializedName ("stacja")
+    @SerializedName("stacja")
     String stationName;
 
-    @SerializedName ("rzeka")
+    @SerializedName("rzeka")
     String riverName;
 
-    @SerializedName ("województwo")
+    @SerializedName("województwo")
     String voivodeshipName;
 
-    @SerializedName ("stan_wody")
+    @SerializedName("stan_wody")
     String waterAmount;
 
-    @SerializedName ("stan_wody_data_pomiaru")
+    @SerializedName("stan_wody_data_pomiaru")
     String waterAmountDate;
 
-    @SerializedName ("temperatura_wody")
+    @SerializedName("temperatura_wody")
     String waterTemperature;
 
-    @SerializedName ("temperatura_wody_data_pomiaru")
+    @SerializedName("temperatura_wody_data_pomiaru")
     String waterTemperatureDate;
 
-    @SerializedName ("zjawisko_lodowe")
+    @SerializedName("zjawisko_lodowe")
     String icingAmount;
 
-    @SerializedName ("zjawisko_lodowe_data_pomiaru")
+    @SerializedName("zjawisko_lodowe_data_pomiaru")
     String icingAmountDate;
 
-    @SerializedName ("zjawisko_zarastania")
+    @SerializedName("zjawisko_zarastania")
     String overgrowAmount;
 
-    @SerializedName ("zjawisko_zarastania_data_pomiaru")
+    @SerializedName("zjawisko_zarastania_data_pomiaru")
     String overgrowAmountDate;
 
 

@@ -43,10 +43,11 @@ public class mRecycler {
         Log.i(LogTag, "created, items = " + adapter.getItemCount());
     }
 
-    public void notifyDataSetChanged(){
-        adapter.notifyDataSetChanged();
+    public void notifyDataSetChanged() {
+        adapter.notifyAdapterDataSetChanged();
     }
-    public int getItemCount(){
+
+    public int getItemCount() {
         return adapter.getItemCount();
     }
 
