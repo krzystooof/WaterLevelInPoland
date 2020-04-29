@@ -68,7 +68,7 @@ public class mRecycler {
             super(0, ItemTouchHelper.LEFT);
             this.adapter = adapter;
             backgroundColor = ContextCompat.getDrawable(context, R.drawable.gradient_item_swipe);
-            icon = ContextCompat.getDrawable(context, R.drawable.baseline_star_border_black_18dp);
+            icon = ContextCompat.getDrawable(context, R.drawable.baseline_star_border_18dp);
         }
 
         @Override
