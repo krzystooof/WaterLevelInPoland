@@ -1,4 +1,4 @@
-package pl.krzystooof.stanwodwpolsce.ui.Search;
+package pl.krzystooof.stanwodwpolsce.Recycler;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;
