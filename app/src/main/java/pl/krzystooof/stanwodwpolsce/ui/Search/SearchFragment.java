@@ -94,7 +94,11 @@ public class SearchFragment extends Fragment {
                 paused = sharedPref.readPaused();
                 if(paused){
                     downloaded = sharedPref.readData();
-                    favourites = sharedPref.readFavourites();
+                    ArrayList<String> readFavourites = sharedPref.readFavourites();
+                    favourites.clear();
+                    for(String fav: readFavourites){
+                        favourites.add(fav);
+                    }
                     Log.i(LogTag, "GetData: data retrieved from sharedPref, size = " + downloaded.size());
                 }
                 else {
