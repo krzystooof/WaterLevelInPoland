@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import pl.krzystooof.stanwodwpolsce.R;
 import pl.krzystooof.stanwodwpolsce.data.DataFromSource;
+import pl.krzystooof.stanwodwpolsce.ui.Search.SearchRecyclerAdapter;
 
 
 public class mRecycler {
@@ -38,7 +39,7 @@ public class mRecycler {
         recyclerView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new mRecyclerAdapter(data);
+        adapter = new SearchRecyclerAdapter(data);
         recyclerView.setAdapter(adapter);
         itemTouchHelper = new ItemTouchHelper(new TouchHelper(adapter,data));
         itemTouchHelper.attachToRecyclerView(recyclerView);
