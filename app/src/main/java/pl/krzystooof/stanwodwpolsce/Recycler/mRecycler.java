@@ -52,6 +52,12 @@ public class mRecycler {
     public int getItemCount() {
         return adapter.getItemCount();
     }
+    public int getVisibleItem(){
+        return linearLayoutManager.findLastCompletelyVisibleItemPosition();
+    }
+    public void setVisibleItem(int number){
+        linearLayoutManager.scrollToPosition(number);
+    }
 
     public void showSnackbar(String text, boolean durationLong) {
         Snackbar snackbar;
