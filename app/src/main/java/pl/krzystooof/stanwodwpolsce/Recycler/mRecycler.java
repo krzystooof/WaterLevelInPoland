@@ -29,16 +29,18 @@ public class mRecycler {
     private LinearLayoutManager linearLayoutManager;
     private ItemTouchHelper itemTouchHelper;
     private Context context;
+    ArrayList<String> favourites;
 
-    public mRecycler(View root, ArrayList<DataFromSource> data, Context context) {
+    public mRecycler(View root, ArrayList<DataFromSource> data, ArrayList<String> favourites, Context context) {
         this.context = context;
+        this.favourites = favourites;
         recyclerView = root.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(linearLayoutManager);
         adapter = new mRecyclerAdapter(data);
         recyclerView.setAdapter(adapter);
-        itemTouchHelper = new ItemTouchHelper(new TouchHelper(adapter));
+        itemTouchHelper = new ItemTouchHelper(new TouchHelper(adapter,data));
         itemTouchHelper.attachToRecyclerView(recyclerView);
         Log.i(LogTag, "created, items = " + adapter.getItemCount());
     }
@@ -59,17 +61,37 @@ public class mRecycler {
         Log.i(LogTag, "Snackbar " + text + " shown");
     }
 
+    public boolean checkFavourite(String id){
+        for(String string : favourites){
+            if (string.equals(id))return true;
+        }
+        return false;
+    }
+    public void addFavourite(String id){
+        favourites.add(id);
+    }
+    public void removeFavourite(String id){
+        for(int i = 0; i<favourites.size();i++){
+            if (favourites.get(i).equals(id)){
+                favourites.remove(i);
+                i--;
+            }
+        }
+    }
+
+
     class TouchHelper extends ItemTouchHelper.SimpleCallback {
         private Drawable backgroundColor;
         private Drawable icon;
         private mRecyclerAdapter adapter;
         private int swipeableViewType = 3;
+        private ArrayList<DataFromSource> data;
 
-        public TouchHelper(mRecyclerAdapter adapter) {
+        public TouchHelper(mRecyclerAdapter adapter, ArrayList<DataFromSource> data) {
             super(0, ItemTouchHelper.LEFT);
             this.adapter = adapter;
             backgroundColor = ContextCompat.getDrawable(context, R.drawable.gradient_item_swipe);
-            icon = ContextCompat.getDrawable(context, R.drawable.baseline_star_border_18dp);
+            this.data = data;
         }
 
         @Override
@@ -85,8 +107,22 @@ public class mRecycler {
                 adapter.notifyItemChanged(position);
                 //left
                 if (direction == 4) {
-                    // TODO add or remove from favourites, notify
-                    Log.i(LogTag, "mRecyclerTouchHelper: item no " + position + " swiped left");
+                    String message;
+                    int dataIndex = position-3;
+                    DataFromSource station = data.get(dataIndex);
+                    String stationId = station.getStationId();
+                    String stationName = station.getStationName();
+                    if (checkFavourite(stationId)){
+                        removeFavourite(stationId);
+                        showSnackbar("Usunięto z ulubionych - " + stationName, false);
+                        message = " removed from favourites: " + stationId;
+                    }
+                    else {
+                        addFavourite(stationId);
+                        showSnackbar("Dodano do ulubionych - " + stationName, false);
+                        message = " added to favourites: " + stationId;
+                    }
+                    Log.i(LogTag, "mRecyclerTouchHelper: item no " + position + " swiped left," + message);
                 }
             }
         }
@@ -96,6 +132,15 @@ public class mRecycler {
                 super.onChildDraw(c, recyclerView, viewHolder, dX,
                         dY, actionState, isCurrentlyActive);
                 View itemView = viewHolder.itemView;
+                int position = viewHolder.getAdapterPosition();
+                int dataIndex = position-3;
+                String stationId = data.get(dataIndex).getStationId();
+                if (checkFavourite(stationId)){
+                    icon = ContextCompat.getDrawable(context, R.drawable.baseline_star_white_18dp);
+                }
+                else {
+                    icon = ContextCompat.getDrawable(context, R.drawable.baseline_star_border_18dp);
+                }
 
                 int backgroundCornerOffset = 20;
                 int maxOffset = 250;
@@ -118,8 +163,6 @@ public class mRecycler {
                                 dY, actionState, false);
                     }
                 }
-                int position = viewHolder.getAdapterPosition();
-                //TODO show icon depending on favourite
                 icon.draw(c);
             }
         }

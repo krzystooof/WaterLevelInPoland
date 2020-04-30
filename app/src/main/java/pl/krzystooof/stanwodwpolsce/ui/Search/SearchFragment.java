@@ -37,6 +37,7 @@ public class SearchFragment extends Fragment {
 
         String jsonUrl = "https://danepubliczne.imgw.pl/api/data/hydro/";
         final ArrayList<DataFromSource> data = new ArrayList<>();
+        final ArrayList<String> favourites = new ArrayList<>();
 
         //start downloading data
         new GetData(jsonUrl, data).execute();
@@ -44,7 +45,7 @@ public class SearchFragment extends Fragment {
         searchViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                recycler = new mRecycler(root, data, getContext());
+                recycler = new mRecycler(root, data, favourites, getContext());
             }
         });
         return root;
