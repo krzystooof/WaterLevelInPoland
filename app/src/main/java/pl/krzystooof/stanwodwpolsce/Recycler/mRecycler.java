@@ -60,9 +60,10 @@ public class mRecycler {
     }
 
     class TouchHelper extends ItemTouchHelper.SimpleCallback {
-        Drawable backgroundColor;
-        Drawable icon;
+        private Drawable backgroundColor;
+        private Drawable icon;
         private mRecyclerAdapter adapter;
+        private int swipeableViewType = 3;
 
         public TouchHelper(mRecyclerAdapter adapter) {
             super(0, ItemTouchHelper.LEFT);
@@ -79,7 +80,7 @@ public class mRecycler {
         @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
-            if (viewHolder.getItemViewType() == 3) {
+            if (viewHolder.getItemViewType() == swipeableViewType) {
                 //set element back to its original position
                 adapter.notifyItemChanged(position);
                 //left
@@ -91,7 +92,7 @@ public class mRecycler {
         }
 
         public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-            if (viewHolder.getItemViewType() == 3) {
+            if (viewHolder.getItemViewType() == swipeableViewType) {
                 super.onChildDraw(c, recyclerView, viewHolder, dX,
                         dY, actionState, isCurrentlyActive);
                 View itemView = viewHolder.itemView;
@@ -117,6 +118,8 @@ public class mRecycler {
                                 dY, actionState, false);
                     }
                 }
+                int position = viewHolder.getAdapterPosition();
+                //TODO show icon depending on favourite
                 icon.draw(c);
             }
         }

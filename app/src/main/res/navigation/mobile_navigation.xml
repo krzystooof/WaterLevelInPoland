@@ -13,13 +13,13 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="pl.krzystooof.stanwodwpolsce.ui.Saved.DashboardFragment"
+        android:name="pl.krzystooof.stanwodwpolsce.ui.Saved.SavedFragment"
         android:label="@string/Saved"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="pl.krzystooof.stanwodwpolsce.ui.Info.NotificationsFragment"
+        android:name="pl.krzystooof.stanwodwpolsce.ui.Info.InfoFragment"
         android:label="Info"
         tools:layout="@layout/fragment_notifications" />
 </navigation>
