@@ -18,7 +18,6 @@ public class mSharedPref {
     String sharedPreferencesName;
     String favouritesName;
     String dataName;
-    String adapterPositionName;
 
     public mSharedPref(Context context) {
         gson = new Gson();
@@ -26,7 +25,6 @@ public class mSharedPref {
         sharedPreferencesName = "sharedPref";
         favouritesName = "favourites";
         dataName = "data";
-        adapterPositionName = "adapterPositionName";
         this.sharedPref = context.getSharedPreferences(sharedPreferencesName, Context.MODE_PRIVATE);
         editor = sharedPref.edit();
     }
@@ -83,12 +81,12 @@ public class mSharedPref {
     public void savePaused(boolean read) {
         sharedPref.edit().putBoolean("paused", read).commit();
     }
-    public void saveAdapterPosition(int position){
+    public void saveAdapterPosition(String name, int position){
         Log.i(LogTag, "save adapter position called");
-        sharedPref.edit().putInt(adapterPositionName, position).commit();
+        sharedPref.edit().putInt(name, position).commit();
     }
-    public int readAdapterPosition(){
+    public int readAdapterPosition(String name){
         Log.i(LogTag, "read adapter position called");
-        return sharedPref.getInt(adapterPositionName,0);
+        return sharedPref.getInt(name,0);
     }
 }

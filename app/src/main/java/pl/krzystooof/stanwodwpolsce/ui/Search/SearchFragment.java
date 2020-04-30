@@ -63,7 +63,7 @@ public class SearchFragment extends Fragment {
         mSharedPref sharedPref = new mSharedPref(getContext());
         sharedPref.saveData(data);
         sharedPref.saveFavourites(favourites);
-        sharedPref.saveAdapterPosition(recycler.getVisibleItem());
+        sharedPref.saveAdapterPosition("searchAdapterPosition", recycler.getVisibleItem());
         sharedPref.savePaused(true);
     }
 
@@ -134,7 +134,7 @@ public class SearchFragment extends Fragment {
             recycler.notifyDataSetChanged();
             Log.i(LogTag, "GetData: notified about data change, recycler items = " + recycler.getItemCount());
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && paused){
-                int visibleItem = sharedPref.readAdapterPosition();
+                int visibleItem = sharedPref.readAdapterPosition("searchAdapterPosition");
                 recycler.setVisibleItem(visibleItem);
                 Log.i(LogTag, "GetData: recycler scrolled to position no " + visibleItem);
             }
