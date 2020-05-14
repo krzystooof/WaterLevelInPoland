@@ -2,7 +2,7 @@
 One screen app for checking depth of waters (rivers, lakes, seas) in Poland
 
 ## Features:
-- showing data from [IMGW](https://dane.imgw.pl/) "IMGW"
+- showing data from [IMGW](https://dane.imgw.pl/)"IMGW"
 
 - filtering data by river name or station name
 
